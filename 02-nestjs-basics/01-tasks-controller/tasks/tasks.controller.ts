@@ -6,26 +6,43 @@ import {
   Param,
   Patch,
   Post,
+  ValidationPipe,
+  // Res,
+  // Req,
+  // Next
+  // ParseUUIDPipe
+  // ParseIntPipe
 } from "@nestjs/common";
-import { TasksService } from "./tasks.service";
-import { Task } from "./task.model";
+import {TasksService} from "./tasks.service";
+import { TaskDto} from "./task.model";
+// import {Request, Response} from 'express';
 
 @Controller("tasks")
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  getAllTasks() {}
+  getAllTasks() {
+    return this.tasksService.getAllTasks();
+  }
 
   @Get(":id")
-  getTaskById(@Param("id") id: string) {}
+  getTaskById(@Param("id") id: string) {
+    return this.tasksService.getTaskById(id);
+  }
 
   @Post()
-  createTask(@Body() task: Task) {}
+  createTask(@Body(new ValidationPipe()) task: TaskDto) {
+    return this.tasksService.createTask(task);
+  }
 
   @Patch(":id")
-  updateTask(@Param("id") id: string, @Body() task: Task) {}
+  updateTask(@Param("id") id: string, @Body(new ValidationPipe()) task: TaskDto) {
+    return this.tasksService.updateTask(id, task);
+  }
 
   @Delete(":id")
-  deleteTask(@Param("id") id: string) {}
+  deleteTask(@Param("id") id: string) {
+    return this.tasksService.deleteTask(id);
+  }
 }
