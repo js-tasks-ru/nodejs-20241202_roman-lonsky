@@ -10,3 +10,13 @@ export interface ITask {
   description: string;
   status: TaskStatus;
 }
+
+export type Paging = {
+  page: number;
+  limit: number;
+};
+
+export enum SortBy {
+  TITLE = 'title',
+  STATUS = 'status',
+}

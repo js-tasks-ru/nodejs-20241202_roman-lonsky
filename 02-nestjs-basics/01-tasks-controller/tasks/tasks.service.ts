@@ -1,6 +1,10 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
-import {Task} from "./task.model";
+import {BadRequestException, Injectable, NotFoundException} from "@nestjs/common";
+import {CompareByStatus, CompareByTitle, Task, TaskDto, TaskStatus} from "./task.model";
 import {Logger} from '../logger';
+import {Paging, SortBy} from "./task.types";
+import {defined, getPage} from "../helpers";
+
+const DEFAULT_PAGE_LIMIT = 10;
 
 @Injectable()
 export class TasksService {
@@ -9,6 +13,66 @@ export class TasksService {
 
   getAllTasks(): Task[] {
     return this.tasks;
+  }
+
+  private filterByStatus(status: TaskStatus, tasks: Task[]): Task[] {
+    return tasks.filter(task => task.status === status);
+  }
+
+  private filterByPaging({page, limit = DEFAULT_PAGE_LIMIT}: Paging, tasks: Task[]) {
+    const [start, end] = getPage(page, limit);
+    return tasks.slice(start, end);
+  }
+
+  private getTaskComparator(sortBy: SortBy) {
+    switch (sortBy) {
+      case SortBy.STATUS: {
+        return CompareByStatus;
+      }
+      case SortBy.TITLE: {
+        return CompareByTitle;
+      }
+      default: {
+        return;
+      }
+    }
+  }
+
+  private sortBy(sortBy: SortBy, tasks: Task[]): Task[] {
+    const toSort = tasks.slice();
+    let Comparator = this.getTaskComparator(sortBy);
+
+    if (Comparator) {
+      return toSort.sort((a, b) => new Comparator(a).compare(b));
+    }
+
+    return tasks;
+  }
+
+  getTasks({status, paging, sortBy}: {status: TaskStatus, paging: Paging, sortBy: SortBy}): Task[] {
+    let result: TaskDto[] = this.tasks;
+    let filtered = false;
+
+    if (defined(status)) {
+      filtered = true;
+      result = this.filterByStatus(status, result);
+    }
+
+    if (defined(sortBy)) {
+      filtered = true;
+      result = this.sortBy(sortBy, result);
+    }
+
+    if (defined(paging.page)) {
+      filtered = true;
+      result = this.filterByPaging(paging, result);
+    }
+
+    if (filtered) {
+      return result;
+    } else {
+      throw new BadRequestException('Filter params status or page must be specified');
+    }
   }
 
   getTaskById(id: string): Task {

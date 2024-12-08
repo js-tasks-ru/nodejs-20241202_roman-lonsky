@@ -29,3 +29,29 @@ export class Task extends TaskDto {
     this.id = genId();
   }
 }
+
+export abstract class TaskComparator {
+  constructor(protected task: ITask) {}
+
+  abstract compare(task: ITask): number;
+}
+
+export class CompareByStatus extends TaskComparator {
+  constructor(protected task: ITask) {
+    super(task);
+  }
+
+  compare(task:ITask) {
+    return this.task.status.localeCompare(task.status);
+  }
+}
+
+export class CompareByTitle extends TaskComparator {
+  constructor(protected task: ITask) {
+    super(task);
+  }
+
+  compare(task:ITask) {
+    return this.task.title.localeCompare(task.title);
+  }
+}

@@ -6,15 +6,18 @@ import {
   Param,
   Patch,
   Post,
-  ValidationPipe,
+  Query,
   // Res,
   // Req,
   // Next
   // ParseUUIDPipe
-  // ParseIntPipe
+  ParseIntPipe,
 } from "@nestjs/common";
 import {TasksService} from "./tasks.service";
-import { TaskDto} from "./task.model";
+import {TaskDto, TaskStatus} from "./task.model";
+import {hasFilter} from "../helpers";
+import {ValidationPipe, ValidationSortByQueryPipe, ValidationStatusQueryPipe} from "../validation";
+import {SortBy} from "./task.types";
 // import {Request, Response} from 'express';
 
 @Controller("tasks")
@@ -22,7 +25,16 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  getAllTasks() {
+  getAllTasks(
+    @Query("status", new ValidationStatusQueryPipe(TaskStatus, { optional: true } )) status: TaskStatus,
+    @Query("page", new ParseIntPipe({optional: true})) page: number,
+    @Query("limit", new ParseIntPipe({optional: true})) limit: number,
+    @Query("sortBy", new ValidationSortByQueryPipe(SortBy, { optional: true } )) sortBy: SortBy,
+  ) {
+    if (hasFilter([status, page, sortBy])) {
+      return this.tasksService.getTasks({status, paging: {page, limit}, sortBy});
+    }
+
     return this.tasksService.getAllTasks();
   }
 
