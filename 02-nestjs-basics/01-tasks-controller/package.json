@@ -2,5 +2,12 @@
   "scripts": {
     "start": "nest start --watch",
     "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --no-warnings --experimental-vm-modules\" NODE_ENV=test jest --config jest.config.js --runInBand"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/uuid": "^10.0.0"
+  },
+  "dependencies": {
+    "uuid": "^11.0.3"
   }
 }
