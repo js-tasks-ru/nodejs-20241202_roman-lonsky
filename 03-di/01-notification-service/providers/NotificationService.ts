@@ -1,7 +1,10 @@
+import { Injectable, Inject } from "@nestjs/common";
+import { LoggerService } from './Logger';
 import { ILogger } from './types';
 
+@Injectable()
 export class NotificationService {
-  constructor(private logger?: ILogger) {
+  constructor(@Inject(LoggerService) private logger: ILogger) {
     console.log('NotificationService', logger);
   };
   
@@ -10,7 +13,7 @@ export class NotificationService {
 
     console.log(mess);
 
-    this.logger?.log(mess);
+    this.logger.log(mess);
   }
 
   sendSMS(to: string, message: string): void {
@@ -18,6 +21,6 @@ export class NotificationService {
 
     console.log(mess);
 
-    this.logger?.log(mess);
+    this.logger.log(mess);
   }
 }

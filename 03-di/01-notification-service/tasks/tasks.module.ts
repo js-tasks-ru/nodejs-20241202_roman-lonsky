@@ -3,13 +3,13 @@ import { TasksController } from "./tasks.controller";
 import { TasksService } from "./tasks.service";
 import { UsersModule } from "../users/users.module";
 import { NotificationService } from "../providers/NotificationService";
-import { FileLoggerService, ConsoleLoggerService } from '../providers/Logger';
+import { FileLoggerService, ConsoleLoggerService, LoggerService } from '../providers/Logger';
 
-const logger = process.env.LOGGER === 'file' ? new FileLoggerService(Date.now().toString(), 'logs.txt') : new ConsoleLoggerService();
+const getLogger = () => process.env.LOGGER === 'file' ? new FileLoggerService(Date.now().toString(), 'logs.txt') : new ConsoleLoggerService();
 
 @Module({
   imports: [UsersModule],
   controllers: [TasksController],
-  providers: [TasksService, { provide: NotificationService, useFactory: () =>  new NotificationService(logger) }],
+  providers: [TasksService, NotificationService, { provide:  LoggerService, useFactory: () => getLogger()}],
 })
 export class TasksModule {}

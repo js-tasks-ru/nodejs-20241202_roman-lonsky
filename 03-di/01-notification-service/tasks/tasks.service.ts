@@ -9,7 +9,7 @@ export class TasksService {
 
   constructor(
     private usersService: UsersService, 
-    @Inject(NotificationService) private notificationService: NotificationService
+    private notificationService: NotificationService
   ) {};
 
   async createTask(createTaskDto: CreateTaskDto) {
