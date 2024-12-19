@@ -3,7 +3,8 @@ import { TasksController } from "./tasks.controller";
 import { TasksService } from "./tasks.service";
 import { UsersModule } from "../users/users.module";
 import { NotificationService } from "../providers/NotificationService";
-import { FileLoggerService, ConsoleLoggerService, LoggerService } from '../providers/Logger';
+import { FileLoggerService, ConsoleLoggerService } from '../providers/Logger';
+import {LoggerService} from "../tokens";
 
 const getLogger = () => process.env.LOGGER === 'file' ? new FileLoggerService(Date.now().toString(), 'logs.txt') : new ConsoleLoggerService();
 

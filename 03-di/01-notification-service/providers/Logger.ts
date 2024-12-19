@@ -2,8 +2,6 @@ import {ILogger} from './types';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-export const LoggerService = 'LoggerService';
-
 export class FileLoggerService implements ILogger {
   constructor(private path: string, private fileName: string) {
     try {

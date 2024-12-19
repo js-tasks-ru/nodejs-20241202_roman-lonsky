@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException, Inject } from "@nes
 import { CreateTaskDto, Task, TaskStatus, UpdateTaskDto } from "./task.model";
 import { UsersService } from '../users/users.service';
 import { NotificationService } from '../providers/NotificationService';
+import {ConfigurationService} from "../configuration/configuration.service";
 
 @Injectable()
 export class TasksService {
@@ -9,7 +10,8 @@ export class TasksService {
 
   constructor(
     private usersService: UsersService, 
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private configurationService: ConfigurationService
   ) {};
 
   async createTask(createTaskDto: CreateTaskDto) {
