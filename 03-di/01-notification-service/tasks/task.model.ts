@@ -10,22 +10,22 @@ export enum TaskStatus {
 export class Task {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  id: string = '';
 
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title: string = '';
 
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description: string = '';
 
   @IsString()
   @IsIn(Object.values(TaskStatus))
-  status: TaskStatus;
+  status: TaskStatus = TaskStatus.Pending;
 
   @IsNumber()
-  assignedTo?: number;
+  assignedTo: number = 0;
 }
 
 export class CreateTaskDto extends PickType(Task, [
