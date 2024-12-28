@@ -1,0 +1,7 @@
+[2024-12-28T15:29:40.053Z] 400 - "asdf" не является числом
+[2024-12-28T15:29:40.586Z] 400 - "asdf" не является числом
+[2024-12-28T15:31:22.152Z] 404 - Cannot GET /taskasdf
+[2024-12-28T15:31:22.857Z] 404 - Cannot GET /taskasdf
+[2024-12-28T15:42:20.970Z] 500 - Mock error for testing
+[2024-12-28T15:42:34.262Z] 500 - Mock error for testing
+[2024-12-28T15:44:11.940Z] 500 - Mock error for testing
