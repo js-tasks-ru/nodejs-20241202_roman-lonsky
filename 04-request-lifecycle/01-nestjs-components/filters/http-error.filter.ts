@@ -4,14 +4,9 @@ import * as fs from 'node:fs';
 
 export class HttpErrorFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    // if (!exception.getStatus) {
-    //   throw exception
-    // }
-
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    // console.log(exception);
     const status = exception.getStatus ? exception.getStatus() : 500;
     const message = exception.message;
 
